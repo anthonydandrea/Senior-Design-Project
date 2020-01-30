@@ -6,3 +6,8 @@ dependencies:
   - pandas=1.0.0
   - mysql-connector-python=8.0.18
   - pymongo=3.9.0
+  - faker=4.0.0
+
+channels:
+  - defaults
+  - conda-forge
