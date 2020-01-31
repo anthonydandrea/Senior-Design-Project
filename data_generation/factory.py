@@ -159,10 +159,10 @@ class Factory:
         child_height = 2.3 * (age - 2) + (34 if sex == "M" else 28)
 
         if age and age <= 17 and age >= 2:
-            return child_height + round(np.random.normal(0, 2))
+            return round(child_height + round(np.random.normal(0, 2)))
 
         elif age and age < 2:  # for less than 24 months, either baby or infant
-            return baby_constant + age * round(np.random.normal(6, 1))
+            return round(baby_constant + age * round(np.random.normal(6, 1)))
 
         if sex == "M":
             return round(np.random.normal(m_average, 2.5))
@@ -187,10 +187,10 @@ class Factory:
             child_weight = 8.1 * (age - 2) + 27
 
         if age and age >= 2 and age <= 20:
-            return child_weight
+            return round(child_weight)
 
         elif age and age < 2:  # for less than 12 months, either baby or infant
-            return baby_constant + age * round(np.random.normal(18, 3))
+            return round(baby_constant + age * round(np.random.normal(18, 3)))
 
         if sex == "M":
             return round(np.random.normal(m_average, 25))
