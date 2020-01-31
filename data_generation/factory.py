@@ -1,16 +1,35 @@
 import random as rd
 import numpy as np
 from faker import Faker
+import os
+import json
 
 
 class Factory:
     def __init__(self):
         self.fake = Faker()
+        self.usedSSNs = set()
+        self.targets = []
+
+        peopleFilePath = os.path.join(os.path.dirname(__file__), "people.json")
+
+        with open(peopleFilePath) as json_file:
+            data = json.load(json_file)
+            for person in data:
+                self.targets.append(person)
+                if person["ssn"] in self.usedSSNs:
+                    raise Exception(
+                        "Duplicate SSN used in people.json, this is not allowed."
+                    )
+                self.usedSSNs.add(person["ssn"])
 
     def getPerson(self):
         init = self.fake.profile()
-        age = self._getAge()
+        while init["ssn"] in self.usedSSNs:
+            init["ssn"] = self.fake.ssn()
+        self.usedSSNs.add(init["ssn"])
 
+        age = self._getAge()
         dob = self._getBirthdateFromAge(age)
         dob_str = str(dob.month) + "/" + str(dob.day) + "/" + str(dob.year)
 
@@ -34,17 +53,35 @@ class Factory:
             "weight (pounds)": self._getWeight(init["sex"], age),
             "ethnicity": self._getEthnicity(),
             "eyeColor": self._getEyeColor(),
-            "bloodType": init["blood_group"],
+            "bloodType": self._getBloodType(),
             "glasses": self.fake.boolean(64),
             "contacts": self.fake.boolean(11),
         }
 
     def getPeople(self, numPeople=10):
-        people = []
-        for i in range(numPeople):
-            people.append(self.getPerson())
+        totPeople = len(self.targets) + numPeople
 
-        return people
+        # the 1.2 is to statistically encourage the unlikely-yet-possible chance of several targets being appended to the end in a bunch.
+        # becomes less significant as number of "fake" people increases
+        targetFraction = 1.2 * len(self.targets) / totPeople
+
+        targetIdx = 0
+
+        for i in range(totPeople):
+            if (rd.random() < targetFraction and targetIdx < len(self.targets)) or \
+            (i >= totPeople - len(self.targets) and targetIdx < len(self.targets)):
+                targetIdx += 1
+                yield self.targets[targetIdx - 1]
+            else:
+                yield self.getPerson()
+
+        # just in case
+        for i in range(len(self.targets)):
+            if targetIdx == len(self.targets):
+                yield self.getPerson()
+            else:
+                targetIdx += 1
+                yield self.targets[targetIdx - 1]
 
     def _getProbabilisticValueFromArray(self, arr):
         r = rd.random()
@@ -73,6 +110,21 @@ class Factory:
 
         return self._getProbabilisticValueFromArray(groups)
 
+    # https://en.wikipedia.org/wiki/Blood_type_distribution_by_country
+    def _getBloodType(self):
+        types = [
+            ("O+", 0.374),
+            ("A+", 0.357),
+            ("B+", 0.085),
+            ("AB+", 0.034),
+            ("O-", 0.066),
+            ("A-", 0.063),
+            ("B-", 0.015),
+            ("AB-", 0.006),
+        ]
+
+        return self._getProbabilisticValueFromArray(types)
+
     # https://visual.ly/community/infographic/other/eye-color-demographics-usa
     def _getEyeColor(self):
         colors = [
@@ -86,7 +138,7 @@ class Factory:
 
     def _getBirthdateFromAge(self, age):
         start = "-" + str(age) + "y"
-        end = "-" + str(age - 1) + "y"
+        end = "-" + str(age - 1) + "y" if age > 0 else "+1y"
         return self.fake.date_between(start, end)
 
     # https://www.statista.com/statistics/270000/age-distribution-in-the-united-states/
