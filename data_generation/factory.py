@@ -58,30 +58,30 @@ class Factory:
             "contacts": self.fake.boolean(11),
         }
 
-    def getPeople(self, numPeople=10):
-        totPeople = len(self.targets) + numPeople
+    def getPeople(self, totPeople=10):
+        numFakePeople = totPeople - len(self.targets)
 
         # the 1.2 is to statistically encourage the unlikely-yet-possible chance of several targets being appended to the end in a bunch.
         # becomes less significant as number of "fake" people increases
         targetFraction = 1.2 * len(self.targets) / totPeople
-
         targetIdx = 0
 
         for i in range(totPeople):
-            if (rd.random() < targetFraction and targetIdx < len(self.targets)) or \
-            (i >= totPeople - len(self.targets) and targetIdx < len(self.targets)):
+            if (rd.random() <= targetFraction and targetIdx < len(self.targets)) or (
+                i >= numFakePeople and targetIdx < len(self.targets)
+            ):
                 targetIdx += 1
                 yield self.targets[targetIdx - 1]
             else:
                 yield self.getPerson()
 
         # just in case
-        for i in range(len(self.targets)):
-            if targetIdx == len(self.targets):
-                yield self.getPerson()
-            else:
-                targetIdx += 1
-                yield self.targets[targetIdx - 1]
+        # for i in range(len(self.targets)):
+        #     if targetIdx == len(self.targets):
+        #         yield self.getPerson()
+        #     else:
+        #         targetIdx += 1
+        #         yield self.targets[targetIdx - 1]
 
     def _getProbabilisticValueFromArray(self, arr):
         r = rd.random()
@@ -151,19 +151,18 @@ class Factory:
         return self._getProbabilisticValueFromArray(ages)
 
     # https://dqydj.com/height-percentile-calculator-for-men-and-women/
+    # https://icosep.org/wp-content/uploads/2016/03/boys-CHART-height-andweight-text.jpg
     def _getHeight(self, sex=None, age=None):
         m_average = 69
         f_average = 64
-        baby_constant = 24
-        a_magic_constant = 9
+        baby_constant = 20
+        child_height = 2.3 * (age - 2) + (34 if sex == "M" else 28)
 
-        if age and age < 16:
-            m_average = (m_average - baby_constant) * age / a_magic_constant
-            f_average = (f_average - baby_constant) * age / a_magic_constant
+        if age and age <= 17 and age >= 2:
+            return child_height + round(np.random.normal(0, 2))
 
-        elif age == 0:  # for less than 12 months, either big baby or small infant
-            m_average = baby_constant
-            f_average = baby_constant
+        elif age and age < 2:  # for less than 24 months, either baby or infant
+            return baby_constant + age * round(np.random.normal(6, 1))
 
         if sex == "M":
             return round(np.random.normal(m_average, 2.5))
@@ -173,18 +172,25 @@ class Factory:
             return round(np.random.normal((m_average + f_average) / 2, 2.25))
 
     # https://dqydj.com/weight-percentile-calculator-men-women/
+    # https://icosep.org/wp-content/uploads/2016/03/boys-CHART-height-andweight-text.jpg
     def _getWeight(self, sex=None, age=None):
         m_average = 189
         f_average = 161
         baby_constant = 9
+        child_weight = None
 
-        if age and age < 18:
-            m_average *= age / 18
-            f_average *= age / 18
+        if sex == "M":
+            child_weight = 8.9 * (age - 2) + 28
+        elif sex == "F":
+            child_weight = 7.4 * (age - 2) + 26
+        else:
+            child_weight = 8.1 * (age - 2) + 27
 
-        elif age == 0:  # for less than 12 months, either big baby or small infant
-            m_average = baby_constant
-            f_average = baby_constant
+        if age and age >= 2 and age <= 20:
+            return child_weight
+
+        elif age and age < 2:  # for less than 12 months, either baby or infant
+            return baby_constant + age * round(np.random.normal(18, 3))
 
         if sex == "M":
             return round(np.random.normal(m_average, 25))
