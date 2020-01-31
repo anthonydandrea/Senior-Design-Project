@@ -161,7 +161,7 @@ class Factory:
         if age and age <= 17 and age >= 2:
             return round(child_height + round(np.random.normal(0, 2)))
 
-        elif age and age < 2:  # for less than 24 months, either baby or infant
+        elif age < 2:  # for less than 24 months, either baby or infant
             return round(baby_constant + age * round(np.random.normal(6, 1)))
 
         if sex == "M":
@@ -189,7 +189,7 @@ class Factory:
         if age and age >= 2 and age <= 20:
             return round(child_weight)
 
-        elif age and age < 2:  # for less than 12 months, either baby or infant
+        elif age < 2:  # for less than 12 months, either baby or infant
             return round(baby_constant + age * round(np.random.normal(18, 3)))
 
         if sex == "M":
