@@ -1,0 +1,36 @@
+{
+    "mysql": {
+        "dbs": {
+            "MySQLTest1": {
+                "tables": {
+                    "table1": {
+                        "schema": "(ssn VARCHAR(255), firstName VARCHAR(255))",
+                        "columns": [
+                            "ssn",
+                            "firstName"
+                        ],
+                        "entry_likelihood": 0.3,
+                        "keys": [
+                            "ssn",
+                            "firstName"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "mongodb": {
+        "dbs": {
+            "mongoTest1": {
+                "collections": {
+                    "collection1": {
+                        "keys": [
+                            "ssn",
+                            "firstName"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
