@@ -9,7 +9,10 @@
                             "ssn",
                             "firstName"
                         ],
-                        "entry_likelihood": 0.3,
+                        "entry_likelihood": 0.1,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
                         "keys": [
                             "ssn",
                             "firstName"
@@ -24,9 +27,24 @@
             "mongoTest1": {
                 "collections": {
                     "collection1": {
+                        "entry_likelihood": 0.25,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
                         "keys": [
-                            "ssn",
-                            "firstName"
+                            "firstName",
+                            "lastName"
+                        ]
+                    },
+                    "test2": {
+                        "entry_likelihood": 0.65,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "prefix",
+                            "suffix",
+                            "height (inches)"
                         ]
                     }
                 }

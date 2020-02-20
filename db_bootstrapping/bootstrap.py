@@ -54,7 +54,7 @@ def readCsv():
     data = csv.reader(f)
 
 
-def insertMySQLData(c):
+def createMySQLCursors(c):
     # print(c)
     try:
         cnx = mysql.connector.connect(
@@ -93,6 +93,7 @@ def insertMySQLData(c):
                             tableName, colsFormatted, ", ".join(colTags)
                         ),
                         "entry_likelihood": tableInfo["entry_likelihood"],
+                        "required_entries_by_ssn": tableInfo["required_entries_by_ssn"],
                         "keys": tableInfo["keys"],
                     }
                 )
@@ -102,53 +103,96 @@ def insertMySQLData(c):
         exit(1)
 
     except:
-        print("Something went wrong inserting the MySQL data:", sys.exc_info()[0])
-        # print("Unexpected error:", )
+        print("Something went wrong in createMySQLCursors:", sys.exc_info()[0])
         exit(1)
 
 
-def insertMongoData(c):
+def createMongoCursors(c):
     # print(c)
     try:
         client = MongoClient("localhost", 27017, serverSelectionTimeoutMS=2000)
-
+        # print(client.list_database_names())
         # Create DBs
         for db, info in c["dbs"].items():
-            print(db, ":", info)
+            # print(db, ":", info)
+            client.drop_database(db)
+            _dbObj = client[db]
+            for collection, colInfo in info["collections"].items():
+                # print(collection, ":", colInfo)
+                _colObj = _dbObj[collection]
+                _colObj.drop()
+
+                cursor_group.append(
+                    {
+                        "type": "mongodb",
+                        "db_name": db,
+                        "db_obj": _dbObj,
+                        "collection_name": collection,
+                        "collection_obj": _colObj,
+                        "entry_likelihood": colInfo["entry_likelihood"],
+                        "required_entries_by_ssn": colInfo["required_entries_by_ssn"],
+                        "keys": colInfo["keys"],
+                    }
+                )
 
         client.close()
 
     except:
-        print("Something went wrong inserting the Mongo data")
+        print("Something went wrong in createMongoCursors:", sys.exc_info()[0])
         exit(1)
 
 
-def _mysqlInsert(o, entry):
-    print(o)
-    print(entry)
-    attrs = tuple([entry[k] for k in o["keys"]])
-    # for k in o["keys"]:
-    #     attrs.append(entry[k])
-    print(o["statement"])
-    print(attrs)
+def _mysqlInsert(o, entry, keyIndexMap):
+    # print(o["keys"])
+    # print(entry)
+
+    attrs = tuple([entry[keyIndexMap[k]] for k in o["keys"]])
     o["cursor"].execute(o["statement"], attrs)
     o["db_obj"].commit()
 
 
+def _mongodbInsert(o, entry, keyIndexMap):
+    # print(o)
+    # print(entry)
+    # print(keyIndexMap)
+    doc = dict()
+    for k in o["keys"]:
+        doc[k] = entry[keyIndexMap[k]]
+
+    o["collection_obj"].insert_one(doc)
+
+
 def insertData():
+    print("inserting data...")
     # print(cursor_group)
-    print(data)
+    # print(data)
+    keyIndexMap = None
+
+    db_type_map = {"mysql": _mysqlInsert, "mongodb": _mongodbInsert}
+
     for entry in data:
+        if keyIndexMap is None:
+            keyIndexMap = dict()
+            for k in range(len(entry)):
+                keyIndexMap[entry[k]] = k
+            continue
+
+        rn = rd.random()
         for c in cursor_group:
-            if rd.random() > c["entry_likelihood"]:
+            if (
+                rn > c["entry_likelihood"]
+                and entry[keyIndexMap["ssn"]] not in c["required_entries_by_ssn"]
+            ):
                 continue
 
-            if c["type"] == "mysql":
-                _mysqlInsert(c, entry)
+            if not c["type"] in db_type_map:
+                raise Exception("Bad db type in cursor_group: " + c)
+
+            db_type_map[c["type"]](c, entry, keyIndexMap)
 
 
 if __name__ == "__main__":
-    print(sys.argv)
+    # print(sys.argv)
     if len(sys.argv) != 2:
         print("Expected one arguement (path to CSV file of data)")
         exit(1)
@@ -158,7 +202,11 @@ if __name__ == "__main__":
 
     readCsv()
 
-    insertMySQLData(config["mysql"])
-    # insertMongoData(config["mongodb"])
+    createMySQLCursors(config["mysql"])
+    createMongoCursors(config["mongodb"])
 
+    # print(cursor_group)
     insertData()
+
+    print("\n\n...All done!")
+
