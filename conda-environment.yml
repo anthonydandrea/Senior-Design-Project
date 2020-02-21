@@ -7,7 +7,7 @@ dependencies:
   - mysql-connector-python=8.0.18
   - pymongo=3.9.0
   - faker=4.0.0
-
+  - fuzzywuzzy=0.17.0
 channels:
   - defaults
   - conda-forge
