@@ -2,8 +2,9 @@ import sys
 import os
 import json
 import csv
-import mysql.connector
 import random as rd
+
+import mysql.connector
 from pymongo import MongoClient
 
 secrets = None

@@ -1,0 +1,24 @@
+[
+    {
+        "type": "mysql",
+        "host": "127.0.0.1",
+        "port": 3304,
+        "user": "root",
+        "password": "root",
+        "name": "MySQLTest1"
+    },
+    {
+        "type": "mysql",
+        "host": "127.0.0.1",
+        "port": 3304,
+        "user": "root",
+        "password": "root",
+        "name": "MySQLTest2"
+    },
+    {
+        "type": "mongo",
+        "host": "127.0.0.1",
+        "port": 27017,
+        "name": "mongoTest1"
+    }
+]
