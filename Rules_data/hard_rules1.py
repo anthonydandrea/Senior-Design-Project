@@ -103,4 +103,3 @@ def check_street(street):
             flag = True
     return (x[0].isdigit()  and flag)    
     
-print(check_street("1234  5345 345"))
