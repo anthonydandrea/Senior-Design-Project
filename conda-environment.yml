@@ -9,6 +9,7 @@ dependencies:
   - faker=4.0.0
   - fuzzywuzzy=0.17.0
   - pymc3=3.8
+  - phonenumbers=8.8
 channels:
   - defaults
   - conda-forge
