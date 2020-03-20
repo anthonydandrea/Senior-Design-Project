@@ -108,12 +108,7 @@ def check_street(street):
         if item[1] == "AddressNumber":
             num = True
     return num and streetname and post
-    # x = street.split()
-    # flag = False
-    # for z in range(1, len(x)):
-    #     if not x[z].isdigit() and isinstance(x[z], str):
-    #         flag = True
-    # return (x[0].isdigit()  and flag)    
+
 
 
 print(check_street("1234 Fake address"), check_states("arIZON    a@@@"))
