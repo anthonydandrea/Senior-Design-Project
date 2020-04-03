@@ -35,6 +35,7 @@ def run_naive_clustering(data, n_clus):
 	
 	km = KModes(n_clusters = n_clus, init='Huang', n_init=5, verbose=1)
 	grouping = km.fit_predict(data)
+	print(km.cluster_centroids_)
 	return grouping
 
 
