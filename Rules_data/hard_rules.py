@@ -224,3 +224,25 @@ def check_ethnicity(ethnicity):
         "other",
     ]
 
+def check_all(info):
+    return [check_bloodtype(info),
+    check_city(info),
+    check_country(info), 
+    check_date(info),
+    check_email(info),
+    check_ethnicity(info),
+    check_eyecolor(info),
+    check_fname(info),
+    check_lname(info),
+    check_phonenumber(info),
+    check_prefix(info),
+    check_sex(info),
+    check_ssn(info),
+    check_states(info),
+    check_street(info),
+    check_suffix(info),
+    check_zip(info)]
+
+
+
+print(check_all("connecticut"))
