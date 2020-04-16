@@ -224,7 +224,7 @@ def check_ethnicity(ethnicity):
         "other",
     ]
 
-def check_all(info):
+def get_possible_keys(info):
     return [check_bloodtype(info),
     check_city(info),
     check_country(info), 
