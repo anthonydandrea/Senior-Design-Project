@@ -13,12 +13,12 @@ class Extractor:
             self.relationships = []
 
     def write_to_file(self):
-		json_utilities.json_write(self.output_path, self.relationships)
+        json_utilities.json_write(self.output_path, self.relationships)
 
     def extract_relationships(self):
             #iterate through metadata json array
-            for each db in self.metadata:
-                for each key:
+            for  db in self.metadata:
+                for table in db['tables']:
                     columns = self._get_columns(db,table/collection )
                     for col in columns:
                         attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
@@ -70,11 +70,18 @@ class Extractor:
             return  db_utilites.get_mongo_keys(db, table)
      
     def _attribute_type(self, samples):
-		naive_type_counts = {“numerical”: 0, “categorical”: 0} 
-		for x in samples:
-			try:
+        naive_type_counts = {'numerical': 0, 'categorical': 0} 
+        for x in samples:
+            try:
                 float(x)
-                naive_type_counts[“numerical”] += 1
+                naive_type_counts['numerical'] += 1
             except:
-				naive_type_counts[“categorical”] += 1
-        return “numerical” if (naive_type_counts[“numerical”] > naive_type_counts[“categorical”]) else return “categorical”
+                naive_type_counts['categorical'] += 1
+
+        return 'numerical' if (naive_type_counts['numerical'] > naive_type_counts['categorical']) else  'categorical'
+
+
+x = ["Michael", 'nic', 'joe', 'anthony', 'TiM', "TOM"]
+
+
+print(col._find_attribute_counts(x))
