@@ -1,4 +1,5 @@
 import argparse
+from fetch import Fetcher
 
 parser = argparse.ArgumentParser(description="Relationship Discovery Tool")
 parser.add_argument(
@@ -52,5 +53,5 @@ def parse_arguments():
         gui(args.gui[0])
 
 
-If __name__ == ‘__main__’:
+if __name__ == "__main__":
 	parse_arguments()
