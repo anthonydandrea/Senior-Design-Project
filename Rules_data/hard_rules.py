@@ -245,4 +245,3 @@ def check_all(info):
 
 
 
-print(check_all("connecticut"))
