@@ -1,0 +1,6 @@
+[
+	{ "id":0, "field_name": "f_name", "db": "dummyvar", "table": "dummyvar", "cluster":0, "likelihood": 0.53},
+	{ "id":1, "field_name": "fname", "db": "dummyvar", "table": "dummyvar", "cluster":0, "likelihood": 0.65},
+	{ "id":2, "field_name": "addr", "db": "dummyvar", "table": "dummyvar", "cluster":1, "likelihood": 0.19},
+	{ "id":3, "field_name": "first_name", "db": "dummyvar", "table": "dummyvar", "cluster":0, "likelihood": 0.78}
+]
