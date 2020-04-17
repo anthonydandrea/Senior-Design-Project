@@ -1,7 +1,12 @@
 import db_utilities
 import json_utilities
-import hard_rules as rules
 from collections import defaultdict
+import sys
+import os
+path = "/mnt/c/Users/Michael/Desktop/School/SD_Project/Repo/Senior-Design-Project/"
+
+sys.path.append(os.path.join(path, 'rules_data'))
+from hard_rules import * 
 #*** metadata file: tables and their schemas
 
 
@@ -19,7 +24,7 @@ class Extractor:
             #iterate through metadata json array
             for  db in self.metadata:
                 for table in db['tables']:
-                    columns = self._get_columns(db,table/collection )
+                    columns = self._get_columns(db,table)
                     for col in columns:
                         attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
                     # attributes_meeting_threshold
@@ -43,7 +48,7 @@ class Extractor:
     def _find_attribute_counts(self,samples):
         found_attrs = defaultdict(lambda: 0)
         for s in samples:
-            sample_rules = rules.get_possible_keys(s)
+            sample_rules = get_possible_keys(s)
             for k in sample_rules:
                 found_attrs[k] += 1
             # ## found_attrs = {
@@ -64,7 +69,7 @@ class Extractor:
     def _get_columns(self, db, table):
 		# if type === mysql, return tables array
         if db['type'] == 'mysql':
-            return db['table'][table]
+            return db['tables'][table]
 		# if type === mongo, return db_utilites.get_mongo_keys(db, table)
         elif db['type'] == 'mongo':
             return  db_utilites.get_mongo_keys(db, table)
@@ -81,7 +86,11 @@ class Extractor:
         return 'numerical' if (naive_type_counts['numerical'] > naive_type_counts['categorical']) else  'categorical'
 
 
-x = ["Michael", 'nic', 'joe', 'anthony', 'TiM', "TOM"]
 
 
-print(col._find_attribute_counts(x))
+pathr = os.path.join(path, 'files')
+pathm = os.path.join(pathr, 'db_metadata.json') 
+x = Extractor(pathm, pathr)
+x.extract_relationships()
+
+

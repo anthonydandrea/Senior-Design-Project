@@ -5,6 +5,9 @@ import phonenumbers
 
 from dateutil.parser import parse
 
+def __init__(self):
+    pass
+
 with open("rules_states.csv", mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     states_dict = {}
@@ -223,25 +226,45 @@ def check_ethnicity(ethnicity):
         "two or more races",
         "other",
     ]
-
+fn = [check_bloodtype,
+    check_city,
+    check_country, 
+    check_date,
+    check_email,
+    check_ethnicity,
+    check_eyecolor,
+    check_fname,
+    check_lname,
+    check_phonenumber,
+    check_prefix,
+    check_sex,
+    check_ssn,
+    check_states,
+    check_street,
+    check_suffix,
+    check_zip]
+st = ["blood type",
+    "city",
+    "country",
+    "date ",
+    "email",
+    "ethnicity",
+    "eye color",
+    "fname",
+    "lname",
+    "phone number",
+    "prefix",
+    "sex",
+    "ssn",
+    "states",
+    "street",
+    "suffix",
+    "zip",]
 def get_possible_keys(info):
-    return [check_bloodtype(info),
-    check_city(info),
-    check_country(info), 
-    check_date(info),
-    check_email(info),
-    check_ethnicity(info),
-    check_eyecolor(info),
-    check_fname(info),
-    check_lname(info),
-    check_phonenumber(info),
-    check_prefix(info),
-    check_sex(info),
-    check_ssn(info),
-    check_states(info),
-    check_street(info),
-    check_suffix(info),
-    check_zip(info)]
-
+    keys = []
+    for x in range(len(fn)):
+        if fn[x](info):
+            keys.append(st[x])
+    return keys
 
 
