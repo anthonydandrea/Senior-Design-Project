@@ -110,6 +110,6 @@ def _sample_mysql_db_table_col(db, table, col, n_items):
     db_connection = _get_mysql_db_connection(db)
     db_cursor = _get_mysql_db_connection(db)
     command = "SELECT {} FROM {} ORDER BY RAND() LIMIT {}".format(col, table, n_items)
-    cursor.execute(command)
-    data = cursor.fetchall()
+    db_cursor.execute(command)
+    data = db_cursor.fetchall()
     return data
