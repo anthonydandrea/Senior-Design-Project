@@ -1,5 +1,6 @@
 import argparse
 from fetch import Fetcher
+from extract import Extractor
 import js_utilities as jsutil
 
 parser = argparse.ArgumentParser(description="Relationship Discovery Tool")
