@@ -23,4 +23,4 @@ def _format_javascript(f, data):
 		f.write(y)
 	return
 
-js_write("./jsonpractice.js", "./sample.json")
+#js_write("./jsonpractice.js", "./sample.json")
