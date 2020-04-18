@@ -22,6 +22,9 @@ class Extractor:
         print(self.relationships, 'test')
         json_utilities.json_write(self.output_path, self.relationships)
 
+    def add_to_relationships(self, att):
+        
+
     def extract_relationships(self):
             #iterate through metadata json array
             for  db in self.metadata:
