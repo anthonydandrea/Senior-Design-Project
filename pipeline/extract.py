@@ -3,10 +3,13 @@ import json_utilities
 from collections import defaultdict
 import sys
 import os
+import random as rd
 
 path = os.getcwd()
-path = os.path.split(path)[0]
+print(path)
+# path = os.path.split(path)[0]
 sys.path.append(os.path.join(path, 'Rules_data'))
+print(sys.path)
 from hard_rules import * 
 #*** metadata file: tables and their schemas
 SOME_MAGIC_THRESHOLD = .8
@@ -22,7 +25,15 @@ class Extractor:
         print(self.relationships, 'test')
         json_utilities.json_write(self.output_path, self.relationships)
 
-    def add_to_relationships(self, att):
+    def add_to_relationships(self, att, db, table, col):
+        self.relationships.append({
+            "id": rd.random(),
+            "field_name": col,
+            "db": db,
+            "table": table,
+            "cluster": att[0],
+            "likelihood": att[1]
+        })
         
 
     def extract_relationships(self):
@@ -33,32 +44,31 @@ class Extractor:
                         columns = self._get_columns(db,table)
                         for col in columns:
                             attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
-                        # attributes_meeting_threshold
-                        if len(attributes_meeting_threshold) == 1:
-                            # append/create a json file with  [..., {db, table, col, samples}]
-                            self.write_to_file()
-                        elif len(attributes_meeting_threshold) == 0:
-                        # none attributes found
-                            print('cool')
-                            pass
-                        else:
-                            # more than one found, unsure
-                            pass
+                            # attributes_meeting_threshold
+                            if len(attributes_meeting_threshold) == 1:
+                                # append/create a json file with  [..., {db, table, col, samples}]
+                                self.add_to_relationships(attributes_meeting_threshold[0], db, table, col)
+                            elif len(attributes_meeting_threshold) == 0:
+                            # none attributes found
+                                print('cool')
+                                pass
+                            else:
+                                # more than one found, unsure
+                                pass
                 else:
                     for table in db['collections']:
                         columns = self._get_columns(db,table)
                         for col in columns:
                             attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
-                        # attributes_meeting_threshold
-                        if len(attributes_meeting_threshold) == 1:
-                            # append/create a json file with  [..., {db, table, col, samples}]
-                            self.write_to_file()
-                        elif len(attributes_meeting_threshold) == 0:
-                        # more than one found,
-                            pass                   
-                        else:
-                            #cannot be determined area
-                            pass
+                            # attributes_meeting_threshold
+                            if len(attributes_meeting_threshold) == 1:
+                                self.add_to_relationships(attributes_meeting_threshold[0], db, table, col)
+                            elif len(attributes_meeting_threshold) == 0:
+                            # more than one found,
+                                pass                   
+                            else:
+                                #cannot be determined area
+                                pass
         
 
     def _get_deterministic_attrs(self, db, table, col):
@@ -85,8 +95,9 @@ class Extractor:
     def _find_threshold_attrs(self, attr_counts, num_samples):
         met_threshold_attrs = []
         for key, val in attr_counts.items():
-            if val/num_samples >= SOME_MAGIC_THRESHOLD:
-                met_threshold_attrs.append(key)
+            likelihood = val / num_samples
+            if likelihood >= SOME_MAGIC_THRESHOLD:
+                met_threshold_attrs.append((key, likelihood))
 
         return met_threshold_attrs
 
@@ -113,9 +124,9 @@ class Extractor:
 
 
 
-pathr = os.path.join(path, 'files/tset.json')
-pathm = os.path.join(path, 'files/db_metadata.json') 
-x = Extractor(pathm, pathr)
-x.extract_relationships()
+# pathr = os.path.join(path, 'files/tset.json')
+# pathm = os.path.join(path, 'files/db_metadata.json') 
+# x = Extractor(pathm, pathr)
+# x.extract_relationships()
 
 
