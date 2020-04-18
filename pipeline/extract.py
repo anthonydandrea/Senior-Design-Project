@@ -9,7 +9,7 @@ path = os.path.split(path)[0]
 sys.path.append(os.path.join(path, 'rules_data'))
 from hard_rules import * 
 #*** metadata file: tables and their schemas
-SOME_MAGIC_THRESHOLD = 0.0
+SOME_MAGIC_THRESHOLD = .8
 
 class Extractor:
     def __init__(self, m_path, r_path):
@@ -34,9 +34,12 @@ class Extractor:
                         if len(attributes_meeting_threshold) == 1:
                             # append/create a json file with  [..., {db, table, col, samples}]
                             self.write_to_file()
-                        else:
-                        # cool
+                        elif len(attributes_meeting_threshold) == 0:
+                        # none attributes found
                             print('cool')
+                            pass
+                        else:
+                            # more than one found, unsure
                             pass
                 else:
                     for table in db['collections']:
@@ -47,10 +50,12 @@ class Extractor:
                         if len(attributes_meeting_threshold) == 1:
                             # append/create a json file with  [..., {db, table, col, samples}]
                             self.write_to_file()
-                        else:
-                        # cool
+                        elif len(attributes_meeting_threshold) == 0:
+                        # more than one found,
                             pass                   
-
+                        else:
+                            #cannot be determined area
+                            pass
         
 
     def _get_deterministic_attrs(self, db, table, col):
