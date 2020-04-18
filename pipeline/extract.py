@@ -3,8 +3,9 @@ import json_utilities
 from collections import defaultdict
 import sys
 import os
-path = "/mnt/c/Users/Michael/Desktop/School/SD_Project/Repo/Senior-Design-Project/"
 
+path = os.getcwd()
+path = os.path.split(path)[0]
 sys.path.append(os.path.join(path, 'rules_data'))
 from hard_rules import * 
 #*** metadata file: tables and their schemas
@@ -30,7 +31,7 @@ class Extractor:
                         for col in columns:
                             attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
                         # attributes_meeting_threshold
-                        if len(attributes_meeting_threshold) == 0:
+                        if len(attributes_meeting_threshold) == 1:
                             # append/create a json file with  [..., {db, table, col, samples}]
                             self.write_to_file()
                         else:
@@ -43,7 +44,7 @@ class Extractor:
                         for col in columns:
                             attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
                         # attributes_meeting_threshold
-                        if len(attributes_meeting_threshold) == 0:
+                        if len(attributes_meeting_threshold) == 1:
                             # append/create a json file with  [..., {db, table, col, samples}]
                             self.write_to_file()
                         else:
@@ -58,7 +59,6 @@ class Extractor:
         samples = ["Georgia", 'Kansas', 'New York', 'California']
         attribute_counts = self._find_attribute_counts(samples)
         attributes_meeting_threshold = self._find_threshold_attrs(attribute_counts,len(samples))
-        print('meeting threshold', attributes_meeting_threshold)
         return attributes_meeting_threshold
 
     def _find_attribute_counts(self,samples):
