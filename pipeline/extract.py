@@ -8,7 +8,7 @@ path = "/mnt/c/Users/Michael/Desktop/School/SD_Project/Repo/Senior-Design-Projec
 sys.path.append(os.path.join(path, 'rules_data'))
 from hard_rules import * 
 #*** metadata file: tables and their schemas
-
+SOME_MAGIC_THRESHOLD = 0.0
 
 class Extractor:
     def __init__(self, m_path, r_path):
@@ -16,33 +16,49 @@ class Extractor:
             self.output_path = r_path
             self.metadata = json_utilities.json_read(m_path)
             self.relationships = []
-
+           
     def write_to_file(self):
+        print(self.relationships, 'test')
         json_utilities.json_write(self.output_path, self.relationships)
 
     def extract_relationships(self):
             #iterate through metadata json array
             for  db in self.metadata:
-                for table in db['tables']:
-                    columns = self._get_columns(db,table)
-                    for col in columns:
-                        attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
-                    # attributes_meeting_threshold
-                    if attributes_meeting_threshold.length == 0:
-                        # append/create a json file with  [..., {db, table, col, samples}]
-                        self.write_to_file()
-                    else:
-                    # cool
-                        pass
+                if 'tables' in db:
+                    for table in db['tables']:
+                        columns = self._get_columns(db,table)
+                        for col in columns:
+                            attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
+                        # attributes_meeting_threshold
+                        if len(attributes_meeting_threshold) == 0:
+                            # append/create a json file with  [..., {db, table, col, samples}]
+                            self.write_to_file()
+                        else:
+                        # cool
+                            print('cool')
+                            pass
+                else:
+                    for table in db['collections']:
+                        columns = self._get_columns(db,table)
+                        for col in columns:
+                            attributes_meeting_threshold = self._get_deterministic_attrs(db,table,col)
+                        # attributes_meeting_threshold
+                        if len(attributes_meeting_threshold) == 0:
+                            # append/create a json file with  [..., {db, table, col, samples}]
+                            self.write_to_file()
+                        else:
+                        # cool
+                            pass                   
 
         
 
     def _get_deterministic_attrs(self, db, table, col):
         #samples =  take X samples using db_utilities.sample_db_table_col(db, table/collection, colum/key)
-        samples = db_utilities.sample_db_table_col(db, table, col)
-        attribute_counts = self.find_attribute_counts(samples)
-        attributes_meeting_threshold = self._find_threshold_attrs(attribute_counts,samples.length)
-
+        # samples = db_utilities.sample_db_table_col(db, table, col)
+        samples = ["Georgia", 'Kansas', 'New York', 'California']
+        attribute_counts = self._find_attribute_counts(samples)
+        attributes_meeting_threshold = self._find_threshold_attrs(attribute_counts,len(samples))
+        print('meeting threshold', attributes_meeting_threshold)
         return attributes_meeting_threshold
 
     def _find_attribute_counts(self,samples):
@@ -68,11 +84,12 @@ class Extractor:
 
     def _get_columns(self, db, table):
 		# if type === mysql, return tables array
+
         if db['type'] == 'mysql':
             return db['tables'][table]
 		# if type === mongo, return db_utilites.get_mongo_keys(db, table)
         elif db['type'] == 'mongo':
-            return  db_utilites.get_mongo_keys(db, table)
+            return  db['collections']
      
     def _attribute_type(self, samples):
         naive_type_counts = {'numerical': 0, 'categorical': 0} 
@@ -88,8 +105,8 @@ class Extractor:
 
 
 
-pathr = os.path.join(path, 'files')
-pathm = os.path.join(pathr, 'db_metadata.json') 
+pathr = os.path.join(path, 'files/tset.json')
+pathm = os.path.join(path, 'files/db_metadata.json') 
 x = Extractor(pathm, pathr)
 x.extract_relationships()
 
