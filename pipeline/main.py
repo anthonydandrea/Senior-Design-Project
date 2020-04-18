@@ -1,5 +1,6 @@
 import argparse
 from fetch import Fetcher
+import js_utilities as jsutil
 
 parser = argparse.ArgumentParser(description="Relationship Discovery Tool")
 parser.add_argument(
@@ -35,8 +36,9 @@ def extract(input_path, output_path):
 
 
 def gui(input_path):
-    server = Server(input_path)
-    server.start()
+    jsutil.js_write("./data.js", input_path)
+    #server = Server(input_path)
+    #server.start()
 
 
 def parse_arguments():

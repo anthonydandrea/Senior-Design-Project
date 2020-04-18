@@ -22,5 +22,3 @@ def _format_javascript(f, data):
 	for y in formatted_edges:
 		f.write(y)
 	return
-
-#js_write("./jsonpractice.js", "./sample.json")
