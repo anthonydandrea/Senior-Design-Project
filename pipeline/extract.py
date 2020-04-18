@@ -6,7 +6,7 @@ import os
 
 path = os.getcwd()
 path = os.path.split(path)[0]
-sys.path.append(os.path.join(path, 'rules_data'))
+sys.path.append(os.path.join(path, 'Rules_data'))
 from hard_rules import * 
 #*** metadata file: tables and their schemas
 SOME_MAGIC_THRESHOLD = .8
