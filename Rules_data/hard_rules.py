@@ -5,16 +5,17 @@ import phonenumbers
 import os
 import sys
 from dateutil.parser import parse
+from pathlib import Path
 
 # path = os.getcwd()
 # print(path)
 # path = os.path.split(path)[0]
-# sys.path.append(os.path.join(path, 'Rules_data/'))
+# sys.path.append(os.path.join(path, ''))
 # print(sys.path)
 def __init__(self):
     pass
 
-with open("Rules_data/rules_states.csv", mode="r") as csv_file:
+with open(str(Path('../Rules_data').resolve())+"/rules_states.csv", mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     states_dict = {}
     line_count = 0
@@ -32,7 +33,7 @@ with open("Rules_data/rules_states.csv", mode="r") as csv_file:
                 .translate({ord(c): "" for c in "!@#$%^&*()[]{};:,./<>?\|`~-=_+ "})
             )
         line_count += 1
-with open("Rules_data/rules_baby-names.csv", mode="r") as csv_file:
+with open(str(Path('../Rules_data').resolve())+"/rules_baby-names.csv", mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     names_set = set()
     line_count = 0
@@ -46,7 +47,7 @@ with open("Rules_data/rules_baby-names.csv", mode="r") as csv_file:
             )
         line_count += 1
 
-f = open("Rules_data/rules_countries.txt", "r")
+f = open(str(Path('../Rules_data').resolve())+"/rules_countries.txt", "r")
 country_set = set()
 line_count = 0
 f1 = f.readlines()
@@ -58,7 +59,7 @@ for row in f1:
     )
     line_count += 1
 
-with open("Rules_data/surnames.csv", mode="r") as csv_file:
+with open(str(Path('../Rules_data').resolve())+"/surnames.csv", mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     lnames_set = set()
     line_count = 0
@@ -72,7 +73,7 @@ with open("Rules_data/surnames.csv", mode="r") as csv_file:
             )
         line_count += 1
 
-with open("Rules_data/uscities.csv", mode="r") as csv_file:
+with open(str(Path('../Rules_data').resolve())+"/uscities.csv", mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     city_set = set()
     line_count = 0
@@ -86,7 +87,7 @@ with open("Rules_data/uscities.csv", mode="r") as csv_file:
             )
         line_count += 1
 
-with open("Rules_data/suffixes.csv", mode="r") as csv_file:
+with open(str(Path('../Rules_data').resolve())+"/suffixes.csv", mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     suffix_set = {"null": "null"}
     line_count = 0
@@ -103,7 +104,7 @@ with open("Rules_data/suffixes.csv", mode="r") as csv_file:
             )
         line_count += 1
 
-with open("Rules_data/prefixes.csv", mode="r") as csv_file:
+with open(str(Path('../Rules_data').resolve())+"/prefixes.csv", mode="r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=",")
     prefix_set = {"null": "null"}
     line_count = 0

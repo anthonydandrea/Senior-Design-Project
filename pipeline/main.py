@@ -1,7 +1,26 @@
-import argparse
-from fetch import Fetcher
-from extract import Extractor
+
+import os
+import sys
+from pathlib import Path
+# filename = 
+# print(filename)
+path = os.getcwd()
+sys.path.insert(0,str(Path('../Rules_data').resolve()))
+sys.path.insert(0,str(Path('../files').resolve()))
+# print(sys.path)
 import js_utilities as jsutil
+from extract import Extractor
+from fetch import Fetcher
+import argparse
+
+# print(path)
+# print(sys.path)
+# path = os.path.split(path)[0]
+
+# print(sys.path)
+
+# exit()
+
 
 parser = argparse.ArgumentParser(description="Relationship Discovery Tool")
 parser.add_argument(
@@ -39,7 +58,7 @@ def extract(input_path, output_path):
 def gui(input_path):
     jsutil.js_write("./data.js", input_path)
     #server = Server(input_path)
-    #server.start()
+    # server.start()
 
 
 def parse_arguments():
@@ -57,4 +76,4 @@ def parse_arguments():
 
 
 if __name__ == "__main__":
-	parse_arguments()
+    parse_arguments()
