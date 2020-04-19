@@ -8,6 +8,7 @@
   
 ### Creating Environment
 `conda env create -f conda-environment.yml`
+
 `pip install -r requirements.txt`
 
 ## Usage
