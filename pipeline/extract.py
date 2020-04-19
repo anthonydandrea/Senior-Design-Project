@@ -27,7 +27,6 @@ class Extractor:
         self.relationships = []
 
     def write_to_file(self):
-        print(self.relationships, 'test')
         json_utilities.json_write(self.output_path, self.relationships)
 
     def add_to_relationships(self, att, db, table, col):

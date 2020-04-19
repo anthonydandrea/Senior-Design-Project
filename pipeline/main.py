@@ -5,7 +5,7 @@ from pathlib import Path
 # filename = 
 # print(filename)
 path = os.getcwd()
-sys.path.insert(0,str(Path('../Rules_data').resolve()))
+sys.path.insert(0,str(Path('../rules_data').resolve()))
 sys.path.insert(0,str(Path('../files').resolve()))
 # print(sys.path)
 import js_utilities as jsutil
