@@ -54,8 +54,7 @@ class Factory:
             "ethnicity": self._getEthnicity(),
             "eyeColor": self._getEyeColor(),
             "bloodType": self._getBloodType(),
-            "glasses": self.fake.boolean(64),
-            "contacts": self.fake.boolean(11),
+            "glasses": self.fake.boolean(72),
         }
 
     def getPeople(self, totPeople=10):
