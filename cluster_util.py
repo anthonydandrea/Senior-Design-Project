@@ -26,8 +26,6 @@ def split_by_type(samples):
 	if (flt >> strg):
 		#write the sample as a float
 
-
-
 #run numerical clustering
 def numerical_clustering():
 #sample from each, catalog
