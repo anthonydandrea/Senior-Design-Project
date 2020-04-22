@@ -57,9 +57,6 @@ def extract(input_path, output_path):
 
 def gui(input_path):
     jsutil.js_write("./data.js", input_path)
-    #server = Server(input_path)
-    # server.start()
-
 
 def parse_arguments():
     args = parser.parse_args()
