@@ -1,25 +1,19 @@
-
 import os
 import sys
 from pathlib import Path
-# filename = 
-# print(filename)
+
 path = os.getcwd()
-sys.path.insert(0,str(Path('../rules_data').resolve()))
-sys.path.insert(0,str(Path('../files').resolve()))
-# print(sys.path)
-import js_utilities as jsutil
-from extract import Extractor
-from fetch import Fetcher
+sys.path.insert(0, str(Path('../rules_data').resolve()))
+sys.path.insert(0, str(Path('../files').resolve()))
+
+
+# Do not change this code above, as it adds the paths needed for modules to find each other
+###########################################################################################
+
 import argparse
-
-# print(path)
-# print(sys.path)
-# path = os.path.split(path)[0]
-
-# print(sys.path)
-
-# exit()
+from fetch import Fetcher
+from extract import Extractor
+import js_utilities as jsutil
 
 
 parser = argparse.ArgumentParser(description="Relationship Discovery Tool")
@@ -56,7 +50,8 @@ def extract(input_path, output_path):
 
 
 def gui(input_path):
-    jsutil.js_write("./data.js", input_path)
+    jsutil.js_write(input_path, "./data.js")
+
 
 def parse_arguments():
     args = parser.parse_args()

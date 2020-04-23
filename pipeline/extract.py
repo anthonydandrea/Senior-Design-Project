@@ -6,7 +6,7 @@ import os
 # print(sys.path)
 # path = os.path.split(path)[0]
 # sys.path.append(os.path.join(path, 'Rules_data'))
-# print(sys.path)
+print(sys.path)
 
 from hard_rules import *
 import db_utilities
@@ -35,7 +35,7 @@ class Extractor:
             "field_name": col,
             "db": db,
             "table": table,
-            "cluster": att[0],
+            "cluster": hash(att[0]) % 10**8,
             "likelihood": att[1]
         })
 
@@ -43,6 +43,7 @@ class Extractor:
         # iterate through metadata json array
         for db in self.metadata:
             keyword = "tables" if db["type"] == "mysql" else "collections"
+            print(db)
             for table in db[keyword]:
                 columns = self._get_columns(db, table)
                 for col in columns:
