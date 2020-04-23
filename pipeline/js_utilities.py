@@ -11,9 +11,9 @@ def _format_javascript(f, data):
 	formatted_var = ["var nodes = [\n\t"]
 	formatted_edges = ["var edges = [\n\t"]
 	for entry in data:
-		nextnode = "{id: %d, label: \"%s\", group: %s},\n\t" %(entry["id"], entry["field_name"], entry["cluster"])
+		nextnode = "{id: \"%s\", label: \"%s\", group: \"%s\""},\n\t" %(entry["id"], entry["field_name"], entry["cluster"])
 		formatted_var.append(nextnode)
-		nextedge = "{from: %d, to: %d, label: \"%s\"},\n\t" %(entry["id"], entry["cluster"], str(entry["likelihood"]*100)+"%")
+		nextedge = "{from: \"%s\", to: \"%d\", label: \"%s\"},\n\t" %(entry["id"], entry["cluster"], str(entry["likelihood"]*100)+"%")
 		formatted_edges.append(nextedge)
 	formatted_var.append("];\n\n")
 	formatted_edges.append("];\n\n")
