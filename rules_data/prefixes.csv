@@ -1,16 +1,26 @@
-Code,Description
-II,The Second
-III,The Third
-IV,The Fourth
-CPA,Certified Public Accountant
-DDS,Doctor of Dental Medicine
-Esq,Esquire
-JD,Jurist Doctor
-Jr,Junior
-LLD,Doctor of Laws
-MD,Doctor of Medicine
-PhD,Doctorate
-Ret,Retired from Armed Forces
-RN,Registered Nurse
-Sr,Senior
-DO,Doctor of Osteopathy
+Code ,Meaning
+Adm,Admiral
+Atty,Attorney
+Brother,Brother (religious)
+Capt,Captain
+Chief,Chief
+Cmdr,Commander
+Col,Colonel
+Dean,University Dean (includes Assistant and Associate)
+Dr,Doctor (Medical or Educator)
+Elder,Elder (religious)
+Father,Father (religious)
+Gen,General
+Gov,Governor
+Hon,"Honorable (Cabinet Officer, Commissioner, Congressman, Judge, Supreme Court, United Nations US Delegate, Major, Senator, and Representative)"
+Lt Col,Lieutenant Colonel
+Maj,Major
+MSgt,Major/Master Sergeant
+Mr,Mister
+Mrs,Married Woman
+Ms,Single or Married Woman
+Prince,Prince
+Prof,Professor (includes Assistant and Associate
+Rabbi,Rabbi (religious)
+Rev,Reverend (religious)
+Sister,Sister

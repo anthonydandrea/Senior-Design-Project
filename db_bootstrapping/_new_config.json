@@ -1,0 +1,141 @@
+{
+    "mysql": {
+        "dbs": {
+            "MySQLTest1": {
+                "tables": {
+                    "table1": {
+                        "schema": "(SSN VARCHAR(255), first_name VARCHAR(255))",
+                        "columns": [
+                            "SSN",
+                            "first_name"
+                        ],
+                        "entry_likelihood": 0.1,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "ssn",
+                            "firstName"
+                        ]
+                    }
+                }
+            },
+            "MySQLTest2": {
+                "tables": {
+                    "table1": {
+                        "schema": "(address VARCHAR(255), home_city VARCHAR(255), home_state VARCHAR(255), ZIP_code VARCHAR(255))",
+                        "columns": [
+                            "address",
+                            "home_city",
+                            "home_state",
+                            "ZIP_code"
+                        ],
+                        "entry_likelihood": 0.4,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "streetAddress",
+                            "city",
+                            "state",
+                            "zip"
+                        ]
+                    }
+                }
+            },
+            "MySQLTest3": {
+                "tables": {
+                    "table1": {
+                        "schema": "(years_old VARCHAR(255), age_in_years VARCHAR(255), height VARCHAR(255), WEIGHT VARCHAR(255), ethnicity VARCHAR(255))",
+                        "columns": [
+                            "years_old",
+                            "age_in_years",
+                            "height",
+                            "WEIGHT",
+                            "ethnicity"
+                        ],
+                        "entry_likelihood": 0.5,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "age",
+                            "age",
+                            "height (inches)",
+                            "weight (pounds)",
+                            "ethnicity"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "mongodb": {
+        "dbs": {
+            "mongoTest1": {
+                "collections": {
+                    "collection1": {
+                        "entry_likelihood": 0.25,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "firstName",
+                            "lastName"
+                        ]
+                    },
+                    "test2": {
+                        "entry_likelihood": 0.65,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "prefix",
+                            "suffix",
+                            "height (inches)"
+                        ]
+                    }
+                }
+            },
+            "mongoTest2": {
+                "collections": {
+                    "collection1": {
+                        "entry_likelihood": 0.8,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "prefix",
+                            "suffix"
+                        ]
+                    },
+                    "test2": {
+                        "entry_likelihood": 0.65,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "bloodType",
+                            "eyeColor",
+                            "glasses"
+                        ]
+                    },
+                    "test3": {
+                        "entry_likelihood": 0.65,
+                        "required_entries_by_ssn": [
+                            "511-01-5985"
+                        ],
+                        "keys": [
+                            "sex",
+                            "DOB",
+                            "ssn",
+                            "email",
+                            "phone",
+                            "country"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

@@ -6,6 +6,7 @@ import os
 import sys
 from dateutil.parser import parse
 from pathlib import Path
+from fuzzywuzzy import fuzz
 
 rules_data_path = str(Path('../rules_data').resolve())
 
@@ -173,10 +174,13 @@ def check_states(state):
 
 def check_zip(zip):
     if len(zip) == 10 or len(zip) == 5:
-        if len(zip) == 10:
-            return zip[0:5].isdigit() and zip[6:].isdigit()
-        else:
-            return zip.isdigit()
+        if not zip[0:5].isdigit():
+            return False
+
+        if len(zip) == 5:
+            return True
+        elif len(zip) == 10:
+            return zip[6:].isdigit()
     return False
 
 
@@ -186,9 +190,9 @@ def check_country(country):
 
 def check_date(s):
     try:
-        parse(s, fuzzy=True)
+        parse(s, fuzzy=False)
         return True
-    except ValueError:
+    except:
         return False
 
 
@@ -198,8 +202,8 @@ def check_sex(sex):
 
 def check_phonenumber(number):
     try:
-        phonenumbers.parse(number, "US")
-        return True
+        num = phonenumbers.parse(number, "US")
+        return phonenumbers.is_possible_number(num)
     except:
         return False
 
@@ -217,55 +221,97 @@ def check_eyecolor(color):
 
 
 def check_ethnicity(ethnicity):
-    return _normalize(ethnicity) in [
+    for val in [
         "white",
-        "hispanic/latino",
-        "black/african american",
+        "hispanic",
+        "latino",
+        "black",
+        "african american",
         "asian",
-        "native american/alaskan native",
-        "native hawaiian/pacific islander",
+        "native american",
+        "alaskan native",
+        "native hawaiian",
+        "pacific islander",
         "two or more races",
-        "other",
-    ]
-fn = [check_bloodtype,
-    check_city,
-    check_country, 
-    check_date,
-    check_email,
-    check_ethnicity,
-    check_eyecolor,
-    check_fname,
-    check_lname,
-    check_phonenumber,
-    check_prefix,
-    check_sex,
-    check_ssn,
-    check_states,
-    check_street,
-    check_suffix,
-    check_zip]
-st = ["blood type",
-    "city",
-    "country",
-    "date ",
-    "email",
-    "ethnicity",
-    "eye color",
-    "fname",
-    "lname",
-    "phone number",
-    "prefix",
-    "sex",
-    "ssn",
-    "states",
-    "street",
-    "suffix",
-    "zip",]
+        "other"
+    ]:
+        # print(fuzz.partial_ratio(ethnicity, val))
+        if fuzz.partial_ratio(ethnicity, val) > 75:
+            print(ethnicity)
+            return True
+
+    return False
+
+
+def check_age(s):
+    try:
+        num = int(s)
+        return num >= 0 and num <= 125
+    except:
+        return False
+
+
+def check_height(s):
+    # for format 5' 11"
+    # if bool(re.match(r"[1-8]' *[0-2]*\" *", s)):
+    #     return True
+    try:
+        num = int(s)
+        # babies >= 12 inches, grown adults <= 272 cm
+        return num >= 12 and num <= 272
+    except:
+        return False
+
+
+def check_weight(s):
+    try:
+        num = int(s)
+        return num < 800
+    except:
+        return False
+
+
+def check_glasses(s):
+    if _normalize(s) in ["yes", "no", "true", "false", "none"]:
+        return True
+
+    return False
+
+
+fn = {
+    "age": check_age,
+    "bloodType": check_bloodtype,
+    "city": check_city,
+    "country": check_country,
+    "date": check_date,
+    "email": check_email,
+    "ethnicity": check_ethnicity,
+    "eyecolor": check_eyecolor,
+    "fname": check_fname,
+    "glasses": check_glasses,
+    "height": check_height,
+    "lname": check_lname,
+    "phone": check_phonenumber,
+    "prefix": check_prefix,
+    "sex": check_sex,
+    "ssn": check_ssn,
+    "state": check_states,
+    "street": check_street,
+    "suffix": check_suffix,
+    "weight": check_weight,
+    "zip": check_zip
+}
+
+
 def get_possible_keys(info):
     keys = []
-    for x in range(len(fn)):
-        if fn[x](info):
-            keys.append(st[x])
+    for key, func in fn.items():
+        if func(info):
+            keys.append(key)
     return keys
 
 
+if __name__ == "__main__":
+    tests = ["542678"]
+    for t in tests:
+        print(check_phonenumber(t))

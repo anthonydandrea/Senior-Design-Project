@@ -1,6 +1,8 @@
 from mysql.connector import MySQLConnection, Error
 from pymongo import MongoClient
 
+SAMPLE_SIZE = 200
+
 
 def _get_mongo_db_connection(db):
     client = None
@@ -103,7 +105,7 @@ def get_mongo_keys(db, collection):
 # Samples from single database
 
 
-def sample_db_table_col(db, table, col, n_items=20):
+def sample_db_table_col(db, table, col, n_items=SAMPLE_SIZE):
     if db["type"] == "mongo":
         return _sample_mongo_db_collection_key(db, table, col, n_items)
     elif db["type"] == "mysql":
@@ -133,7 +135,7 @@ def _sample_mongo_db_collection_key(db, collection, key, n_items):
     # print("data:", data)
     # return []
     data = list(map(lambda x: x[key], data))
-    print("data:",data)
+    print("data:", data)
     # return []
     return data
 

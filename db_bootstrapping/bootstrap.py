@@ -81,9 +81,15 @@ def createMySQLCursors(c):
                 # print(cols)
                 # print(colTags)
                 cursor.execute("DROP TABLE IF EXISTS {}".format(tableName))
+                print("CREATE TABLE {} {}".format(
+                    tableName, tableInfo["schema"]))
                 cursor.execute(
                     "CREATE TABLE {} {}".format(tableName, tableInfo["schema"])
                 )
+
+                print("INSERT INTO {} {} VALUES ({})".format(
+                    tableName, colsFormatted, ", ".join(colTags)
+                ))
                 cursor_group.append(
                     {
                         "type": "mysql",
@@ -148,17 +154,20 @@ def _mysqlInsert(o, entry, keyIndexMap):
     # print(entry)
 
     attrs = tuple([entry[keyIndexMap[k]] for k in o["keys"]])
+    # print("statement:", o["statement"])
+    # print("attrs:", attrs)
+    # print(o)
     o["cursor"].execute(o["statement"], attrs)
     o["db_obj"].commit()
 
 
 def _mongodbInsert(o, entry, keyIndexMap):
-    # print(o)
-    # print(entry)
-    # print(keyIndexMap)
+    print(o)
+    print(entry)
+    print(keyIndexMap)
     doc = dict()
     for k in o["keys"]:
-        doc[k] = entry[keyIndexMap[k]]
+        doc[k["key_name"]] = entry[keyIndexMap[k["from_key"]]]
 
     o["collection_obj"].insert_one(doc)
 
@@ -210,4 +219,3 @@ if __name__ == "__main__":
     insertData()
 
     print("\n\n...All done!")
-

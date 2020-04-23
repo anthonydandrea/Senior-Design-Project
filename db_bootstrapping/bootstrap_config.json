@@ -4,19 +4,11 @@
             "MySQLTest1": {
                 "tables": {
                     "table1": {
-                        "schema": "(ssn VARCHAR(255), firstName VARCHAR(255))",
-                        "columns": [
-                            "ssn",
-                            "firstName"
-                        ],
+                        "schema": "(SSN VARCHAR(255), first_name VARCHAR(255))",
+                        "columns": ["SSN", "first_name"],
                         "entry_likelihood": 0.1,
-                        "required_entries_by_ssn": [
-                            "511-01-5985"
-                        ],
-                        "keys": [
-                            "ssn",
-                            "firstName"
-                        ]
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": ["ssn", "firstName"]
                     }
                 }
             }
@@ -28,23 +20,278 @@
                 "collections": {
                     "collection1": {
                         "entry_likelihood": 0.25,
-                        "required_entries_by_ssn": [
-                            "511-01-5985"
-                        ],
-                        "keys": [
-                            "firstName",
-                            "lastName"
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "F_name",
+                                "from_key": "firstName"
+                            },
+                            {
+                                "key_name": "last_name",
+                                "from_key": "lastName"
+                            },
+                            {
+                                "key_name": "Social Security Number",
+                                "from_key": "ssn"
+                            },
+                            {
+                                "key_name": "Home Tele",
+                                "from_key": "phone"
+                            },
+                            {
+                                "key_name": "E-Mail Address",
+                                "from_key": "email"
+                            },
+                            {
+                                "key_name": "DOB",
+                                "from_key": "DOB"
+                            },
+                            {
+                                "key_name": "ethnicity",
+                                "from_key": "ethnicity"
+                            },
+                            {
+                                "key_name": "Sex",
+                                "from_key": "sex"
+                            },
+                            {
+                                "key_name": "Prescription",
+                                "from_key": "glasses"
+                            }
                         ]
                     },
                     "test2": {
-                        "entry_likelihood": 0.65,
-                        "required_entries_by_ssn": [
-                            "511-01-5985"
-                        ],
-                        "keys": [
-                            "prefix",
-                            "suffix",
-                            "height (inches)"
+                        "entry_likelihood": 1,
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "prefix",
+                                "from_key": "prefix"
+                            },
+                            {
+                                "key_name": "Suffix",
+                                "from_key": "suffix"
+                            },
+                            {
+                                "key_name": "HEIGHT",
+                                "from_key": "height (inches)"
+                            },
+                            {
+                                "key_name": "last_name",
+                                "from_key": "lastName"
+                            },
+                            {
+                                "key_name": "home_address",
+                                "from_key": "streetAddress"
+                            },
+                            {
+                                "key_name": "Home State",
+                                "from_key": "state"
+                            }
+                        ]
+                    }
+                }
+            },
+            "mongoTest2": {
+                "collections": {
+                    "collection1": {
+                        "entry_likelihood": 0.8,
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "addr",
+                                "from_key": "streetAddress"
+                            },
+                            {
+                                "key_name": "CITY",
+                                "from_key": "city"
+                            },
+                            {
+                                "key_name": "STATE",
+                                "from_key": "state"
+                            },
+                            {
+                                "key_name": "ZIP_code",
+                                "from_key": "zip"
+                            },
+                            {
+                                "key_name": "birthdate",
+                                "from_key": "DOB"
+                            },
+                            {
+                                "key_name": "Country",
+                                "from_key": "country"
+                            },
+                            {
+                                "key_name": "age",
+                                "from_key": "age"
+                            },
+                            {
+                                "key_name": "phone",
+                                "from_key": "phone"
+                            }
+                        ]
+                    },
+                    "test2": {
+                        "entry_likelihood": 0.5,
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "ETHNICITY",
+                                "from_key": "ethnicity"
+                            },
+                            {
+                                "key_name": "eye_clr",
+                                "from_key": "eyeColor"
+                            },
+                            {
+                                "key_name": "blood_type",
+                                "from_key": "bloodType"
+                            },
+                            {
+                                "key_name": "GLASSES",
+                                "from_key": "glasses"
+                            },
+                            {
+                                "key_name": "cell-phone",
+                                "from_key": "phone"
+                            },
+                            {
+                                "key_name": "Address",
+                                "from_key": "streetAddress"
+                            }
+                        ]
+                    },
+                    "collection3": {
+                        "entry_likelihood": 0.8,
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "addr",
+                                "from_key": "streetAddress"
+                            },
+                            {
+                                "key_name": "CITY",
+                                "from_key": "city"
+                            },
+                            {
+                                "key_name": "STATE",
+                                "from_key": "state"
+                            },
+                            {
+                                "key_name": "Zip",
+                                "from_key": "zip"
+                            },
+                            {
+                                "key_name": "birthdate",
+                                "from_key": "DOB"
+                            },
+                            {
+                                "key_name": "Country",
+                                "from_key": "country"
+                            },
+                            {
+                                "key_name": "age",
+                                "from_key": "age"
+                            },
+                            {
+                                "key_name": "phone",
+                                "from_key": "phone"
+                            }
+                        ]
+                    },
+                    "test3": {
+                        "entry_likelihood": 0.5,
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "Age",
+                                "from_key": "age"
+                            },
+                            {
+                                "key_name": "ethnic",
+                                "from_key": "ethnicity"
+                            },
+                            {
+                                "key_name": "EYE_COLOR",
+                                "from_key": "eyeColor"
+                            },
+                            {
+                                "key_name": "bloodType",
+                                "from_key": "bloodType"
+                            },
+                            {
+                                "key_name": "glasses",
+                                "from_key": "glasses"
+                            },
+                            {
+                                "key_name": "cellular",
+                                "from_key": "phone"
+                            },
+                            {
+                                "key_name": "street",
+                                "from_key": "streetAddress"
+                            }
+                        ]
+                    },
+                    "collection4": {
+                        "entry_likelihood": 0.8,
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "US_address",
+                                "from_key": "streetAddress"
+                            },
+                            {
+                                "key_name": "US_city",
+                                "from_key": "city"
+                            },
+                            {
+                                "key_name": "US_state",
+                                "from_key": "state"
+                            },
+                            {
+                                "key_name": "zip-code",
+                                "from_key": "zip"
+                            },
+                            {
+                                "key_name": "date of birth",
+                                "from_key": "DOB"
+                            },
+                            {
+                                "key_name": "country",
+                                "from_key": "country"
+                            },
+                            {
+                                "key_name": "years_old",
+                                "from_key": "age"
+                            },
+                            {
+                                "key_name": "home phone",
+                                "from_key": "phone"
+                            }
+                        ]
+                    },
+                    "test4": {
+                        "entry_likelihood": 0.5,
+                        "required_entries_by_ssn": ["511-01-5985"],
+                        "keys": [{
+                                "key_name": "ETHNICITY",
+                                "from_key": "ethnicity"
+                            },
+                            {
+                                "key_name": "eye_color",
+                                "from_key": "eyeColor"
+                            },
+                            {
+                                "key_name": "BLOOD_TYPE",
+                                "from_key": "bloodType"
+                            },
+                            {
+                                "key_name": "contacts",
+                                "from_key": "glasses"
+                            },
+                            {
+                                "key_name": "mobile",
+                                "from_key": "phone"
+                            },
+                            {
+                                "key_name": "home address",
+                                "from_key": "streetAddress"
+                            }
                         ]
                     }
                 }

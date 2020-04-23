@@ -1,3 +1,8 @@
+import random as rd
+from collections import defaultdict
+import json_utilities
+import db_utilities
+from hard_rules import *
 import sys
 import os
 
@@ -8,15 +13,9 @@ import os
 # sys.path.append(os.path.join(path, 'Rules_data'))
 print(sys.path)
 
-from hard_rules import *
-import db_utilities
-import json_utilities
-from collections import defaultdict
-
-import random as rd
 
 # *** metadata file: tables and their schemas
-SOME_MAGIC_THRESHOLD = .8
+SOME_MAGIC_THRESHOLD = .85
 
 
 class Extractor:
@@ -50,8 +49,8 @@ class Extractor:
                     attributes_meeting_threshold = self._get_deterministic_attrs(
                         db, table, col)
 
-                    print("attributes_meeting_threshold:",
-                          attributes_meeting_threshold)
+                    # print("attributes_meeting_threshold:",
+                        #   attributes_meeting_threshold)
 
                     # if len(attributes_meeting_threshold) == 1:
                     #     # append/create a json file with  [..., {db, table, col, samples}]
@@ -73,12 +72,14 @@ class Extractor:
         samples = db_utilities.sample_db_table_col(db, table, col)
         samples = list(map(lambda x: str(x[0]) if type(
             x) == type((1, 1)) else str(x), samples))
-        print("Samples:", samples)
+        # print("Samples:", samples)
+        sample_set = set(samples)
+        # print("Sample Set:", sample_set)
         # return []
         # samples = ["Georgia", 'Kansas', 'New York', 'California']
-        attribute_counts = self._find_attribute_counts(samples)
+        attribute_counts = self._find_attribute_counts(sample_set)
         attributes_meeting_threshold = self._find_threshold_attrs(
-            attribute_counts, len(samples))
+            attribute_counts, len(sample_set))
         return attributes_meeting_threshold
 
     def _find_attribute_counts(self, samples):
@@ -96,7 +97,7 @@ class Extractor:
     def _find_threshold_attrs(self, attr_counts, num_samples):
         met_threshold_attrs = []
         for key, val in attr_counts.items():
-            likelihood = val / num_samples
+            likelihood = round(val / num_samples, 2)
             if likelihood >= SOME_MAGIC_THRESHOLD:
                 met_threshold_attrs.append((key, likelihood))
 
