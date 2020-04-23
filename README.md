@@ -19,3 +19,8 @@ Ensure your conda environment is activated: `conda activate senior-design-env`
 
 ### Relationship Discoverey Extraction
 `cd pipeline && python main.py --extract /absolute/path/to/db_metadata.json /absolute/output_path/for/db_relationships.json`
+
+### GUI Creation
+`cd pipeline && python main.py --gui /absolute/path/to/db_relationships.json`
+
+Double-click on GUI.html to see the results in your browser.
